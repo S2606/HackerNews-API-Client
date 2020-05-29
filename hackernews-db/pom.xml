@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hackernews-backend</artifactId>
+        <groupId>com.paytm.insider</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hackernews-db</artifactId>
+
+    <properties>
+        <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
+        <postgresql.driver.version>42.2.2</postgresql.driver.version>
+        <postgresql.driver.name>org.postgresql.Driver</postgresql.driver.name>
+        <sql.path>${basedir}/src/main/resources/sql</sql.path>
+    </properties>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>${sql-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.driver.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <driver>${postgresql.driver.name}</driver>
+                    <url>jdbc:postgresql://{DB_HOSTNAME}:{DB_PORT}/{DB_DATABASE}</url>
+                    <username>{DB_USERNAME}</username>
+                    <password>{DB_PASSWORD}</password>
+                    <autocommit>true</autocommit>
+                    <onError>abort</onError>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.0</version>
+                <configuration>
+                    <user>{DB_USERNAME}</user>
+                    <password>{DB_PASSWORD}</password>
+                    <url>jdbc:postgresql://{DB_HOSTNAME}:{DB_PORT}/{DB_DATABASE}</url>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- database setup -->
+        <profile>
+            <id>setup</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>${sql-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>db-setup</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <orderFile>none</orderFile>
+                                    <srcFiles>
+                                        <srcFile>${sql.path}/hackernews-test.sql</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+
+</project>
