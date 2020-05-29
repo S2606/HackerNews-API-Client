@@ -1,0 +1,89 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hacker News Client API",
+    "version": "1.0.0",
+    "description": "## API of Comment Service\n\nThis specification describes the endpoints, request/response model of the Hacker News Client API. This API provides REST resources to provide top comments w.r.t the stories to the  mobile application.\nthe following base URL: ```   https://localhost/api/v1/ ```\n"
+  },
+  "host": "localhost",
+  "basePath": "/api/v1/comments",
+  "tags": [
+    {
+      "name": "API#001 Comments",
+      "description": "All operations marked with 'API#001 Comments' are relevant to comments use case"
+    }
+  ],
+  "paths": {
+    "/comments/{storyId}": {
+      "x-swagger-router-controller": "api",
+      "get": {
+        "tags": [
+          "API#001 Comments"
+        ],
+        "operationId": "topComments",
+        "summary": "Top Comments",
+        "description": "returns the top 10 parent comments on a given story, sorted by the total number of comments (including child comments) per thread. Each comment will have the comment's text, the user’s HN handle, and their HN age. The HN age of a user is basically how old their Hacker News profile is in years.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storyId",
+            "type": "integer",
+            "required": true,
+            "description": "Numeric ID of the story for which comment needs to be fetched"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS-Request returns with related data",
+            "schema": {
+              "$ref": "#/definitions/TopCommentsResponse"
+            }
+          },
+          "404": {
+            "description": "BAD REQUEST - server cannot or will not process the request due to requested data not found"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - server encountered an unexpected condition that prevented it from fulfilling the request."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TopCommentsResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Comment Text"
+          },
+          "user-handle": {
+            "type": "string",
+            "description": "User's HN Handle"
+          },
+          "hn-age": {
+            "type": "integer",
+            "description": "User's HN Age(how old their HN profile is)"
+          }
+        },
+        "required": [
+          "text",
+          "user-handle",
+          "hn-age"
+        ]
+      },
+      "maxItems": 10,
+      "uniqueItems": true,
+      "example": {
+        "text": "the quick brown fox jumps over the lazy dog",
+        "user-handle": "sha_gun",
+        "hn-age": 100
+      }
+    }
+  }
+}

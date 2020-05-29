@@ -1,0 +1,178 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hacker News Client API",
+    "version": "1.0.0",
+    "description": "## API of Story Service\n\nThis specification describes the endpoints, request/response model of the Hacker News Client API. This API provides REST resources to provide top HackerNews stories to the  mobile application.\nthe following base URL: ```   https://localhost/api/v1/ ```\n"
+  },
+  "host": "localhost",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "API#001 Stories",
+      "description": "All operations marked with 'API#001 Stories' are relevant to stories use case"
+    }
+  ],
+  "paths": {
+    "/top-stories": {
+      "x-swagger-router-controller": "api",
+      "get": {
+        "tags": [
+          "API#001 Stories"
+        ],
+        "operationId": "topStories",
+        "summary": "Top Stories",
+        "description": "returns the top 10 stories ranked by score in the last 10 minutes. Each story will have the title, url, score, time of submission, and the user who submitted it.\n",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS-Request returns with related data",
+            "schema": {
+              "$ref": "#/definitions/TopStoriesResponse"
+            }
+          },
+          "404": {
+            "description": "BAD REQUEST - server cannot or will not process the request due to requested data not found"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - server encountered an unexpected condition that prevented it from fulfilling the request."
+          }
+        }
+      }
+    },
+    "/past-stories": {
+      "x-swagger-router-controller": "api",
+      "get": {
+        "tags": [
+          "API#001 Stories"
+        ],
+        "operationId": "pastStories",
+        "summary": "Past Stories",
+        "description": "returns all past stories that were served previously.\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS-Request returns with related data"
+          },
+          "404": {
+            "description": "BAD REQUEST - server cannot or will not process the request due to requested data not found"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR - server encountered an unexpected condition that prevented it from fulfilling the request."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TopStoriesResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the story"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL associated with that story"
+          },
+          "score": {
+            "type": "integer",
+            "description": "Score for that story"
+          },
+          "submission-time": {
+            "type": "string",
+            "description": "Submission time of that story"
+          },
+          "user": {
+            "type": "string",
+            "description": "user associated with that story"
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "score",
+          "submission-time",
+          "user"
+        ]
+      },
+      "example": {
+        "title": "Random-title",
+        "url": "https://en.wikipedia.org",
+        "score": 100,
+        "submission-time": "2020-05-26T04:00:21.000Z",
+        "user": "sha_gun"
+      },
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "PastStoriesResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the story"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL associated with that story"
+          },
+          "score": {
+            "type": "integer",
+            "description": "Score for that story"
+          },
+          "submission-time": {
+            "type": "string",
+            "description": "Submission time of that story"
+          },
+          "user": {
+            "type": "string",
+            "description": "user associated with that story"
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "score",
+          "submission-time",
+          "user"
+        ]
+      },
+
+      "example": {
+        "title": "Random-title",
+        "url": "https://en.wikipedia.org",
+        "score": 100,
+        "submission-time": "2020-05-26T04:00:21.000Z",
+        "user": "sha_gun"
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Error message stating the reason"
+        }
+      },
+      "required": [
+        "message"
+      ],
+      "example": {
+        "message": "Story already exist"
+      }
+    }
+  }
+}
