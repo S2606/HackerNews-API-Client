@@ -12,6 +12,25 @@
 
 ![Architecture](HackerNews-API-Arch.png)
 
+### File Structure
+- `hackernews-api` 
+    - API Controllers
+- `hackernews-db`
+    - DB configs
+    - Migration files
+    - Dummy Data file generator
+- `hackernews-service`
+    - Business Logic(Service)
+        - For interacting with controllers
+        - For collection of data from third party API
+        (In this case HackerNews)
+    - Logic for storage sorting mechanism
+    - DAO (Data access object) layer
+    - DTO (Data transfer object) layer
+    - Entities
+    - Task Scheduler
+    - Custom Exception
+
 ### Project Setup
 - Set the following values
      - `DB-HOST`
