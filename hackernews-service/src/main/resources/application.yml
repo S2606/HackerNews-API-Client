@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: prod,main
+  datasource:
+    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_DATABASE}?useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    platform: postgresql
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: hn-service
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: debug
+        order_inserts: true
+      springframework:
+        orm:
+          jpa: debug
+        transaction: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    loggers:
+      enabled: true
+env:
+  type: local
