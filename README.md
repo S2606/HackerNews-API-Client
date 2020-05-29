@@ -10,7 +10,7 @@
 
 ### System Architecture
 
-
+![Architecture](HackerNews-API-Arch.png)
 
 ### Project Setup
 - Set the following values
