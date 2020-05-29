@@ -1,0 +1,23 @@
+server:
+  servlet:
+    port: 8080
+    contextPath: /api/v1
+
+spring:
+
+  application:
+    name: hackernews-api
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_DATABASE}?useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+
+
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
